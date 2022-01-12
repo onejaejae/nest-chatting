@@ -16,12 +16,12 @@ export class ChatsGateway
 {
   private logger = new Logger('chat');
 
-  handleDisconnect() {
-    this.logger.log('Disconnection');
+  handleDisconnect(@ConnectedSocket() socket: Socket) {
+    this.logger.log(`Disconnection ${socket.id} ${socket.nsp.name}`);
   }
 
-  handleConnection() {
-    this.logger.log('connection');
+  handleConnection(@ConnectedSocket() socket: Socket) {
+    this.logger.log(`connection ${socket.id} ${socket.nsp.name}`);
   }
 
   afterInit() {
@@ -35,5 +35,16 @@ export class ChatsGateway
   ) {
     socket.broadcast.emit('user_connected', username);
     return username;
+  }
+
+  @SubscribeMessage('submit_chat')
+  handleSubmitChat(
+    @MessageBody() chat: string,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    socket.broadcast.emit('new_chat', {
+      chat,
+      username: socket.id,
+    });
   }
 }
