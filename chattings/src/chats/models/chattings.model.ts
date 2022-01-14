@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose';
 import { IsString, IsNotEmpty } from 'class-validator';
-import { Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Socket as SocketModel } from './sockets.model';
 
 const options: SchemaOptions = {
@@ -27,4 +27,4 @@ export class Chatting extends Document {
   chat: string;
 }
 
-export const chattingSchema = SchemaFactory.createForClass(Chatting);
+export const ChattingSchema = SchemaFactory.createForClass(Chatting);
